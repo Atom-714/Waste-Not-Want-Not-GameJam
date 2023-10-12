@@ -7,9 +7,17 @@ public class Gun : MonoBehaviour
     public GameObject projectile;
     public float projectileSpeed = 1;
     public Transform firePoint;
+    public int ammoCost = 1;
 
     private Vector3 mousePosition;
     private Vector2 direction;
+    private Inventory inventory;
+
+    private void Awake()
+    {
+        inventory = GetComponentInParent<Inventory>();
+    }
+
     void Update()
     {
         mousePosition = Input.mousePosition;
@@ -21,7 +29,12 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
-        p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
+        if (inventory.currentBattery.CanShoot(ammoCost))
+        {
+            GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
+            p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
+
+            inventory.currentBattery.UpdateCharge(ammoCost);
+        }
     }
 }

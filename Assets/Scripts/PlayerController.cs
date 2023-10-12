@@ -10,10 +10,9 @@ public class PlayerController : MonoBehaviour, IController
     private Vector2 moveInput;
     private MoveVelocity moveVelocity;
     private Gun gun;
+    private Inventory inventory;
 
     public bool canAct { get; set; }
-    public int maxHealth;
-    public int currentHealth;
 
     // Start is called before the first frame update
     void Awake()
@@ -22,6 +21,7 @@ public class PlayerController : MonoBehaviour, IController
         playerInput = new PlayerInput();
         moveVelocity = GetComponent<MoveVelocity>();
         gun = GetComponentInChildren<Gun>();
+        inventory = GetComponent<Inventory>();
     }
 
     public void OnEnable()
@@ -32,11 +32,16 @@ public class PlayerController : MonoBehaviour, IController
         //Shoot input
         playerInput.Game.Shoot.performed += Shoot;
         playerInput.Game.Shoot.Enable();
+
+        //Menu input
+        playerInput.Game.OpenMenu.performed += OpenMenu;
+        playerInput.Game.OpenMenu.Enable();
     }
     public void OnDisable()
     {
         movement.Disable();
         playerInput.Game.Shoot.Disable();
+        playerInput.Game.OpenMenu.Disable();
     }
 
     // Update is called once per frame
@@ -53,12 +58,28 @@ public class PlayerController : MonoBehaviour, IController
 
     public void Damage(int amount)
     {
-        currentHealth -= amount;
+        if (inventory.currentBattery.GetCurrentCharge() == 0 || inventory.currentBattery == null)
+        {
+            Die();
+        }
+        else
+        {
+            inventory.currentBattery.UpdateCharge(amount);
+        }
     }
 
     private void Shoot(InputAction.CallbackContext obj)
     {
+        if (!canAct || inventory.currentBattery == null)
+        {
+            return;
+        }
         gun.Shoot();
+    }
+    private void OpenMenu(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Menu");
+        inventory.OpenMenu();
     }
 
     public void Die()

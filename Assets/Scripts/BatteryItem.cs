@@ -13,9 +13,9 @@ public class BatteryItem : ScriptableObject
 [System.Serializable]
 public class BatteryInstance
 {
-    [SerializeField] BatteryItem battery;
-    [SerializeField] int currentCharge;
-    private int maxCharge;
+    [SerializeField] public BatteryItem battery;
+    [SerializeField] public int currentCharge;
+    public int maxCharge;
 
     public BatteryInstance(BatteryItem battery)
     {
@@ -26,14 +26,11 @@ public class BatteryInstance
 
     public void UpdateCharge(int amount)
     {
+        Debug.Log(amount);
         currentCharge -= amount;
         if (currentCharge < 0)
         {
             currentCharge = 0;
-        }
-        else if (currentCharge > maxCharge)
-        {
-            currentCharge = maxCharge;
         }
     }
     public bool CanShoot(int cost)

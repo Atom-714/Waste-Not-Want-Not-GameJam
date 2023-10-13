@@ -11,11 +11,8 @@ public class BatteryPickup : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Inventory inventory = collision.GetComponent<Inventory>();
-            if (inventory.batteries.Count < inventory.maxCapacity)
-            {
-                inventory.AddBattery(battery);
-                Destroy(gameObject);
-            }
+            inventory.AddBattery(battery);
+            Destroy(gameObject);
         }
     }
 }

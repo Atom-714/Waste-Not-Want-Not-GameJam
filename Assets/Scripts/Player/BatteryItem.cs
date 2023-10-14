@@ -26,7 +26,6 @@ public class BatteryInstance
 
     public void UpdateCharge(int amount)
     {
-        Debug.Log(amount);
         currentCharge -= amount;
         if (currentCharge < 0)
         {

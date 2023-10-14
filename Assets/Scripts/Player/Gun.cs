@@ -27,7 +27,7 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        if (inventory.currentBattery.CanShoot(ammoCost))
+        if (inventory.currentBattery.CanShoot(ammoCost) && !inventory.isInventoryOpen)
         {
             GameObject p = Instantiate(projectile, firePoint.position, transform.rotation);
             p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);

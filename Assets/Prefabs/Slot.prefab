@@ -94,6 +94,8 @@ MonoBehaviour:
   slotIndex: 0
   slotImage: {fileID: 7628577275437347926}
   textMeshPro: {fileID: 0}
+  selectedColor: {r: 0.15125823, g: 1, b: 0, a: 0.39215687}
+  unselectedColor: {r: 1, g: 1, b: 1, a: 0.39215687}
 --- !u!1 &7628577275437347924
 GameObject:
   m_ObjectHideFlags: 0

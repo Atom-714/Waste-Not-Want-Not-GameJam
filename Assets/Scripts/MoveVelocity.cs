@@ -9,13 +9,13 @@ public class MoveVelocity : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 velocity;
     private Animator animator;
-    private PlayerController playerController;
+    private IController controller;
 
     // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerController = GetComponent<PlayerController>();
+        controller = GetComponent<IController>();
         //animator = GetComponent<Animator>();
     }
 
@@ -27,7 +27,7 @@ public class MoveVelocity : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (playerController.canAct)
+        if (controller.canAct)
         {
             rb.velocity = velocity * moveSpeed;
         }

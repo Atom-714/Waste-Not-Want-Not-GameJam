@@ -11,12 +11,24 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     public int slotIndex;
     public Image slotImage = null;
     public TMP_Text textMeshPro;
+    public Color selectedColor;
+    public Color unselectedColor;
 
+    private Image backgroundImage;
+    private void Awake()
+    {
+        backgroundImage = GetComponent<Image>();
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             inventory.currentBattery = inventory.batteries[slotIndex];
+            foreach (Slot slot in inventory.slots)
+            {
+                slot.Unselect();
+            }
+            backgroundImage.color = selectedColor;
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -43,5 +55,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler
             slotImage.sprite = battery.battery.icon;
             textMeshPro.text = ((float)battery.currentCharge / battery.maxCharge * 100) + "%";
         }
+    }
+
+    public void Unselect()
+    {
+        backgroundImage.color = unselectedColor;
     }
 }

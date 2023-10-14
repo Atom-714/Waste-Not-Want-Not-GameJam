@@ -78,12 +78,11 @@ public class PlayerController : MonoBehaviour, IController
     }
     private void OpenMenu(InputAction.CallbackContext obj)
     {
-        Debug.Log("Menu");
         inventory.OpenMenu();
     }
 
     public void Die()
     {
-
+        Debug.Log("Die");
     }
 }

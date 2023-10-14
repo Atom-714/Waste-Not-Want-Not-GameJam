@@ -12,7 +12,7 @@ public class Inventory : MonoBehaviour
     public int maxCapacity = 6;
     public GameObject inventoryUI;
     public float slowMoScale = 0.5f;
-    private bool isInventoryOpen = false;
+    public bool isInventoryOpen = false;
     private float originalTimeScale;
 
 

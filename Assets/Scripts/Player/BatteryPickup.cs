@@ -10,9 +10,12 @@ public class BatteryPickup : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Inventory inventory = collision.GetComponent<Inventory>();
-            inventory.AddBattery(battery);
-            Destroy(gameObject);
+            if (collision.GetComponent<Inventory>().HasOpening())
+            {
+                Inventory inventory = collision.GetComponent<Inventory>();
+                inventory.AddBattery(battery);
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   projectile: {fileID: 524733898676065472, guid: 3647b1214ce883e4984163bc8427aa4b, type: 3}
-  projectileSpeed: 6
+  projectileSpeed: 8
   fireRate: 1
   health: 3
 --- !u!114 &5223021621013903284

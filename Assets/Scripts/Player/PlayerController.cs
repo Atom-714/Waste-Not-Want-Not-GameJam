@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour, IController
         playerInput.Game.Shoot.performed += Shoot;
         playerInput.Game.Shoot.Enable();
 
+        //Melee input
+        playerInput.Game.Melee.performed += Melee;
+        playerInput.Game.Melee.Enable();
+
         //Menu input
         playerInput.Game.OpenMenu.performed += OpenMenu;
         playerInput.Game.OpenMenu.Enable();
@@ -42,6 +46,7 @@ public class PlayerController : MonoBehaviour, IController
         movement.Disable();
         playerInput.Game.Shoot.Disable();
         playerInput.Game.OpenMenu.Disable();
+        playerInput.Game.Melee.Disable();
     }
 
     // Update is called once per frame
@@ -65,6 +70,7 @@ public class PlayerController : MonoBehaviour, IController
         else
         {
             inventory.currentBattery.UpdateCharge(amount);
+            inventory.UpdateUI();
         }
     }
 
@@ -75,6 +81,14 @@ public class PlayerController : MonoBehaviour, IController
             return;
         }
         gun.Shoot();
+    }
+    private void Melee(InputAction.CallbackContext obj)
+    {
+        if (!canAct)
+        {
+            return;
+        }
+        gun.Melee();
     }
     private void OpenMenu(InputAction.CallbackContext obj)
     {

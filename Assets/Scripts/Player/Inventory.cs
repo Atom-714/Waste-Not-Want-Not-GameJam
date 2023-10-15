@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour
     public GameObject inventoryUI;
     public float slowMoScale = 0.5f;
     public bool isInventoryOpen = false;
+    public Image energyBar;
     private float originalTimeScale;
 
 
@@ -64,11 +65,23 @@ public class Inventory : MonoBehaviour
             Time.timeScale = originalTimeScale;
         }
     }
+    public bool HasOpening()
+    {
+        for (int i = 0; i < batteries.Count; i++)
+        {
+            if (batteries[i].battery == null)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public void UpdateUI()
     {
         foreach (Slot slot in slots)
         {
             slot.SetUI();
         }
+        energyBar.fillAmount = (float)currentBattery.currentCharge / currentBattery.maxCharge;
     }
 }

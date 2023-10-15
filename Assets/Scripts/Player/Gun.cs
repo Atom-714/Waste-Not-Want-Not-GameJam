@@ -9,6 +9,7 @@ public class Gun : MonoBehaviour
     public Transform firePoint;
     public Transform lookTarget;
     public int ammoCost = 1;
+    public GameObject meleeProjectile;
 
     private Vector2 direction;
     private Inventory inventory;
@@ -33,6 +34,15 @@ public class Gun : MonoBehaviour
             p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
 
             inventory.currentBattery.UpdateCharge(ammoCost);
+            inventory.UpdateUI();
+        }
+    }
+    public void Melee()
+    {
+        if (!inventory.isInventoryOpen)
+        {
+            GameObject p = Instantiate(meleeProjectile, firePoint.position, transform.rotation);
+            p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
         }
     }
 }

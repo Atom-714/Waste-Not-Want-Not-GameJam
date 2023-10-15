@@ -10,7 +10,8 @@ public class EnemyController : MonoBehaviour, IController
     public bool canAct { get; set; }
     public GameObject projectile;
     public float projectileSpeed;
-    public float fireRate = 1.0f;
+    public float fireRate = 1.5f;
+    public float fireRateRange = 0.5f;
     private float nextFireTime = 0f;
 
     public int health = 3;
@@ -31,7 +32,7 @@ public class EnemyController : MonoBehaviour, IController
         {
             Shoot();
 
-            nextFireTime = Time.time + 1.0f / fireRate;
+            nextFireTime = Time.time + Random.Range(fireRate - fireRateRange, fireRate + fireRateRange);
         }
     }
 

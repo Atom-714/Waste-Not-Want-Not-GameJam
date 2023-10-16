@@ -10,13 +10,16 @@ public class Gun : MonoBehaviour
     public Transform lookTarget;
     public int ammoCost = 1;
     public GameObject meleeProjectile;
+    public SpriteRenderer playerSprite;
 
     private Vector2 direction;
     private Inventory inventory;
+    private SpriteRenderer gunSprite;
 
     private void Awake()
     {
         inventory = GetComponentInParent<Inventory>();
+        gunSprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -24,6 +27,19 @@ public class Gun : MonoBehaviour
         direction = (lookTarget.position - transform.position).normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        if (lookTarget.position.x < transform.position.x)
+        {
+            //on the left
+            playerSprite.flipX = true;
+            gunSprite.flipY = true;
+        }
+        else
+        {
+            //on the right
+            playerSprite.flipX = false;
+            gunSprite.flipY = false;
+        }
     }
 
     public void Shoot()

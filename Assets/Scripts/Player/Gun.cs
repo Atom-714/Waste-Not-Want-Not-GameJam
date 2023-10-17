@@ -15,11 +15,13 @@ public class Gun : MonoBehaviour
     private Vector2 direction;
     private Inventory inventory;
     private SpriteRenderer gunSprite;
+    private Animator animator;
 
     private void Awake()
     {
         inventory = GetComponentInParent<Inventory>();
-        gunSprite = GetComponent<SpriteRenderer>();
+        gunSprite = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -57,6 +59,7 @@ public class Gun : MonoBehaviour
     {
         if (!inventory.isInventoryOpen)
         {
+            animator.SetTrigger("Melee");
             GameObject p = Instantiate(meleeProjectile, firePoint.position, transform.rotation);
             p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
         }

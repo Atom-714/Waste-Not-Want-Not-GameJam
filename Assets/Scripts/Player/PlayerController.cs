@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour, IController
     private MoveVelocity moveVelocity;
     private Gun gun;
     private Inventory inventory;
+    private Animator animator;
+    public CameraShake cameraShake;
 
     public bool canAct { get; set; }
 
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour, IController
         moveVelocity = GetComponent<MoveVelocity>();
         gun = GetComponentInChildren<Gun>();
         inventory = GetComponent<Inventory>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void OnEnable()
@@ -63,6 +66,8 @@ public class PlayerController : MonoBehaviour, IController
 
     public void Damage(int amount)
     {
+        animator.SetTrigger("Hurt");
+        cameraShake.DoCameraShake();
         if (inventory.currentBattery.GetCurrentCharge() == 0 || inventory.currentBattery == null)
         {
             Die();

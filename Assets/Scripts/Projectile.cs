@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public int damage;
     public float time;
+    public bool doesDestroy = true;
     [SerializeField] private LayerMask dontHitLayer;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -13,7 +14,10 @@ public class Projectile : MonoBehaviour
         if (other.transform.GetComponent<IController>() != null && other.gameObject.layer != dontHitLayer)
         {
             other.transform.GetComponent<IController>().Damage(damage);
-            Destroy(gameObject);
+            if (doesDestroy)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

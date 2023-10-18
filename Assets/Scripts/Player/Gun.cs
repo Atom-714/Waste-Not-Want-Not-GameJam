@@ -16,12 +16,14 @@ public class Gun : MonoBehaviour
     private Inventory inventory;
     private SpriteRenderer gunSprite;
     private Animator animator;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         inventory = GetComponentInParent<Inventory>();
         gunSprite = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -53,6 +55,7 @@ public class Gun : MonoBehaviour
 
             inventory.currentBattery.UpdateCharge(ammoCost);
             inventory.UpdateUI();
+            audioSource.Play();
         }
     }
     public void Melee()
@@ -62,6 +65,7 @@ public class Gun : MonoBehaviour
             animator.SetTrigger("Melee");
             GameObject p = Instantiate(meleeProjectile, firePoint.position, transform.rotation);
             p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
+            audioSource.Play();
         }
     }
 }

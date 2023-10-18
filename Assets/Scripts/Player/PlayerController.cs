@@ -12,19 +12,25 @@ public class PlayerController : MonoBehaviour, IController
     private Gun gun;
     private Inventory inventory;
     private Animator animator;
+    public GameObject gameMenu;
+    public GameObject gameOverMenu;
     public CameraShake cameraShake;
+    private AudioSource audioSource;
+    private float originalTimeScale;
 
     public bool canAct { get; set; }
 
     // Start is called before the first frame update
     void Awake()
     {
+        originalTimeScale = Time.timeScale;
         canAct = true;
         playerInput = new PlayerInput();
         moveVelocity = GetComponent<MoveVelocity>();
         gun = GetComponentInChildren<Gun>();
         inventory = GetComponent<Inventory>();
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     public void OnEnable()
@@ -43,6 +49,9 @@ public class PlayerController : MonoBehaviour, IController
         //Menu input
         playerInput.Game.OpenMenu.performed += OpenMenu;
         playerInput.Game.OpenMenu.Enable();
+
+        playerInput.Game.OpenGameMenu.performed += OpenGameMenu;
+        playerInput.Game.OpenGameMenu.Enable();
     }
     public void OnDisable()
     {
@@ -50,6 +59,7 @@ public class PlayerController : MonoBehaviour, IController
         playerInput.Game.Shoot.Disable();
         playerInput.Game.OpenMenu.Disable();
         playerInput.Game.Melee.Disable();
+        playerInput.Game.OpenGameMenu.Disable();
     }
 
     // Update is called once per frame
@@ -76,12 +86,13 @@ public class PlayerController : MonoBehaviour, IController
         {
             inventory.currentBattery.UpdateCharge(amount);
             inventory.UpdateUI();
+            audioSource.Play();
         }
     }
 
     private void Shoot(InputAction.CallbackContext obj)
     {
-        if (!canAct || inventory.currentBattery == null)
+        if (!canAct && !gameMenu.active || inventory.currentBattery == null)
         {
             return;
         }
@@ -89,7 +100,7 @@ public class PlayerController : MonoBehaviour, IController
     }
     private void Melee(InputAction.CallbackContext obj)
     {
-        if (!canAct)
+        if (!canAct && !gameMenu.active)
         {
             return;
         }
@@ -97,11 +108,27 @@ public class PlayerController : MonoBehaviour, IController
     }
     private void OpenMenu(InputAction.CallbackContext obj)
     {
-        inventory.OpenMenu();
+        if (!gameMenu.active)
+        {
+            inventory.OpenMenu();
+        }
+    }
+    private void OpenGameMenu(InputAction.CallbackContext obj)
+    {
+        gameMenu.SetActive(!gameMenu.active);
+        if (gameMenu.active)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = originalTimeScale;
+        }
     }
 
     public void Die()
     {
-        Debug.Log("Die");
+        Time.timeScale = 0;
+        gameOverMenu.SetActive(true);
     }
 }

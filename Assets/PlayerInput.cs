@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenGameMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""aab940d5-3c71-4eb1-a973-b8033e905b95"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""518b2b4a-955b-43fa-8403-928ac02e60c5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenGameMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +184,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Game_Shoot = m_Game.FindAction("Shoot", throwIfNotFound: true);
         m_Game_OpenMenu = m_Game.FindAction("OpenMenu", throwIfNotFound: true);
         m_Game_Melee = m_Game.FindAction("Melee", throwIfNotFound: true);
+        m_Game_OpenGameMenu = m_Game.FindAction("OpenGameMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Shoot;
     private readonly InputAction m_Game_OpenMenu;
     private readonly InputAction m_Game_Melee;
+    private readonly InputAction m_Game_OpenGameMenu;
     public struct GameActions
     {
         private @PlayerInput m_Wrapper;
@@ -237,6 +259,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Game_Shoot;
         public InputAction @OpenMenu => m_Wrapper.m_Game_OpenMenu;
         public InputAction @Melee => m_Wrapper.m_Game_Melee;
+        public InputAction @OpenGameMenu => m_Wrapper.m_Game_OpenGameMenu;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,6 +281,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Melee.started += instance.OnMelee;
             @Melee.performed += instance.OnMelee;
             @Melee.canceled += instance.OnMelee;
+            @OpenGameMenu.started += instance.OnOpenGameMenu;
+            @OpenGameMenu.performed += instance.OnOpenGameMenu;
+            @OpenGameMenu.canceled += instance.OnOpenGameMenu;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -274,6 +300,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Melee.started -= instance.OnMelee;
             @Melee.performed -= instance.OnMelee;
             @Melee.canceled -= instance.OnMelee;
+            @OpenGameMenu.started -= instance.OnOpenGameMenu;
+            @OpenGameMenu.performed -= instance.OnOpenGameMenu;
+            @OpenGameMenu.canceled -= instance.OnOpenGameMenu;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -297,5 +326,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnOpenMenu(InputAction.CallbackContext context);
         void OnMelee(InputAction.CallbackContext context);
+        void OnOpenGameMenu(InputAction.CallbackContext context);
     }
 }

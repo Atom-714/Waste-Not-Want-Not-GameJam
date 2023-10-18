@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour
     public float slowMoScale = 0.5f;
     public bool isInventoryOpen = false;
     public Image energyBar;
+    public AudioSource pickUpAudio;
     private float originalTimeScale;
 
 
@@ -24,6 +25,7 @@ public class Inventory : MonoBehaviour
         batteries[0].battery = newBatteryInstance.battery;
         batteries[0].currentCharge = newBatteryInstance.battery.powerLevel;
         batteries[0].maxCharge = newBatteryInstance.battery.powerLevel;
+        currentBattery = batteries[0];
         UpdateUI();
     }
 
@@ -40,6 +42,7 @@ public class Inventory : MonoBehaviour
                 break;
             }
         }
+        pickUpAudio.Play();
         UpdateUI();
     }
     public void RemoveBattery(BatteryInstance battery)

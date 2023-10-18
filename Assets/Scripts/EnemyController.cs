@@ -18,6 +18,8 @@ public class EnemyController : MonoBehaviour, IController
     private Animator animator;
     private SpriteRenderer sprite;
     public GameObject[] itemDrops;
+    public AudioSource audioSource;
+    public AudioSource shootSound;
 
     public int health = 3;
 
@@ -32,6 +34,11 @@ public class EnemyController : MonoBehaviour, IController
 
     private void Update()
     {
+        if (!canAct)
+        {
+            return;
+        }
+
         direction = (player.position - transform.position).normalized;
         moveVelocity.SetVelocity(direction);
 
@@ -54,6 +61,7 @@ public class EnemyController : MonoBehaviour, IController
 
     public void Shoot()
     {
+        shootSound.Play();
         GameObject p = Instantiate(projectile, transform.position, transform.rotation);
         p.GetComponent<Rigidbody2D>().AddForce(direction.normalized * projectileSpeed, ForceMode2D.Impulse);
     }
@@ -61,13 +69,26 @@ public class EnemyController : MonoBehaviour, IController
     public void Damage(int amount)
     {
         health -= amount;
-        animator.SetTrigger("Hurt");
+        
+        audioSource.Play();
         if (health <= 0)
         {
-            Die();
+            animator.SetTrigger("Die");
+            moveVelocity.Stop();
+            canAct = false;
+            StartCoroutine(DieTimer());
+        }
+        else
+        {
+            animator.SetTrigger("Hurt");
         }
     }
 
+    private IEnumerator DieTimer()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Die();
+    }
     public void Die()
     {
         waveHandler.spawnedEnemies.Remove(this.gameObject);

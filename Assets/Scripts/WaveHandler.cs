@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WaveHandler : MonoBehaviour
 {
@@ -12,9 +13,15 @@ public class WaveHandler : MonoBehaviour
     public List<GameObject> spawnedEnemies;
     public int[] enemiesCost;
     public int state = 0; //0 = wave over, 1 = wave is currently happening
+    public Animator waveNumberAnimator;
+    public TMP_Text waveNumberText;
+    public AudioSource audioSource;
 
     public IEnumerator StartWave()
     {
+        waveNumberText.text = "Wave " + waveNumber;
+        waveNumberAnimator.SetTrigger("ShowText");
+        audioSource.Play();
         for (int i = startCurrency; i > 0;)
         {
             yield return new WaitForSeconds(1f);

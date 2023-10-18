@@ -23,6 +23,10 @@ public class MoveVelocity : MonoBehaviour
     {
         velocity = newVelocity;
     }
+    public void Stop()
+    {
+        rb.velocity = Vector3.zero;
+    }
 
     // Update is called once per frame
     void FixedUpdate()

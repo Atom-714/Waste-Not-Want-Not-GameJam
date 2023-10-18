@@ -5,6 +5,7 @@ using UnityEngine;
 public class BatteryPickup : MonoBehaviour
 {
     public BatteryItem battery;
+    public float lifeTime = 30f;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -17,5 +18,15 @@ public class BatteryPickup : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    private void Awake()
+    {
+        StartCoroutine(DestroyTimer());
+    }
+    private IEnumerator DestroyTimer()
+    {
+        yield return new WaitForSeconds(lifeTime);
+        Destroy(gameObject);
     }
 }
